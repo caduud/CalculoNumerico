@@ -1,22 +1,16 @@
 # --- Definição das Funções ---
-# use 'x' como a variável
-# a derivada e a função phi devem ser calculadas manualmente
-funcao_fx = e^(-x^2) - cos(x)
-funcao_derivada = sin(x) - 2*x*e^(-x^2)
-funcao_phi = x + cos(x) - e^(-x^2)
+funcao_fx = x^3 - 10
+funcao_derivada = 3*x^2
+funcao_phi = 2*x - 5
 
 # --- Configurações Globais ---
-precisao = 0.01
-max_iteracoes = 100
-
-# --- Seleção do Método ---
-# opções: bisseccao, iteracao_linear, newton, secante, regula_falsi
-metodo_escolhido = secante
+precisao = 0.1
+max_iteracoes = 50
 
 # --- Parâmetros Específicos para cada Método ---
-intervalo_bisseccao = [1, 2]
-x0_iteracao_linear = 1.5
-x0_newton = 1.5
-x0_secante = 1
-x1_secante = 2
-intervalo_regula_falsi = [1, 2]
+intervalo_bisseccao = [2, 3]
+x0_iteracao_linear = 2.5
+x0_newton = 2.5
+x0_secante = 2
+x1_secante = 3
+intervalo_regula_falsi = [2, 3]

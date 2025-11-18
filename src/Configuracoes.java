@@ -1,4 +1,3 @@
-// Configuracoes.java
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -6,17 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Configuracoes {
-    // Funções lidas do arquivo
     public String funcaoFxString;
     public String funcaoDerivadaString;
     public String funcaoPhiString;
 
-    // Configurações globais
     public double precisao;
     public int maxIteracoes;
-    public String metodoEscolhido;
 
-    // Parâmetros para os métodos
     public double bisseccaoIntervaloInicio, bisseccaoIntervaloFim;
     public double iteracaoLinearX0;
     public double newtonX0;
@@ -27,7 +22,6 @@ public class Configuracoes {
         configuraDados(filename);
     }
 
-    // Função auxiliar para pegar uma propriedade obrigatória
     private String verificaDados(Map<String, String> lista, String key) throws IOException {
         String value = lista.get(key);
         if (value == null || value.trim().isEmpty()) {
@@ -52,41 +46,23 @@ public class Configuracoes {
             }
         }
 
-        // --- 1. Carrega as propriedades que são SEMPRE obrigatórias ---
+
         funcaoFxString = verificaDados(lista, "funcao_fx");
         funcaoDerivadaString = verificaDados(lista, "funcao_derivada");
         funcaoPhiString = verificaDados(lista, "funcao_phi");
         precisao = Double.parseDouble(verificaDados(lista, "precisao"));
         maxIteracoes = Integer.parseInt(verificaDados(lista, "max_iteracoes"));
-        metodoEscolhido = verificaDados(lista, "metodo_escolhido").toLowerCase();
 
-        // --- 2. Carrega os parâmetros obrigatórios APENAS para o método escolhido ---
-        switch (metodoEscolhido) {
-            case "bisseccao":
-                String intervaloBisseccao = verificaDados(lista, "intervalo_bisseccao");
-                parseIntervalo(intervaloBisseccao, "bisseccao");
-                break;
-            case "iteracao_linear":
-                iteracaoLinearX0 = Double.parseDouble(verificaDados(lista, "x0_iteracao_linear"));
-                break;
-            case "newton":
-                newtonX0 = Double.parseDouble(verificaDados(lista, "x0_newton"));
-                break;
-            case "secante":
-                secanteX0 = Double.parseDouble(verificaDados(lista, "x0_secante"));
-                secanteX1 = Double.parseDouble(verificaDados(lista, "x1_secante"));
-                break;
-            case "regula_falsi":
-                String intervaloRegulaFalsi = verificaDados(lista, "intervalo_regula_falsi");
-                parseIntervalo(intervaloRegulaFalsi, "regula_falsi");
-                break;
-            default:
-                // O Main.java já trata o caso de um método inválido, então não precisamos fazer nada aqui.
-                break;
-        }
+        String intervaloBisseccao = verificaDados(lista, "intervalo_bisseccao");
+        parseIntervalo(intervaloBisseccao, "bisseccao");
+        iteracaoLinearX0 = Double.parseDouble(verificaDados(lista, "x0_iteracao_linear"));
+        newtonX0 = Double.parseDouble(verificaDados(lista, "x0_newton"));
+        secanteX0 = Double.parseDouble(verificaDados(lista, "x0_secante"));
+        secanteX1 = Double.parseDouble(verificaDados(lista, "x1_secante"));
+        String intervaloRegulaFalsi = verificaDados(lista, "intervalo_regula_falsi");
+        parseIntervalo(intervaloRegulaFalsi, "regula_falsi");
     }
 
-    // Pequena função auxiliar para não repetir o código de parse do intervalo
     private void parseIntervalo(String intervalo, String metodo) throws IOException {
         String[] parte = intervalo.replace("[", "").replace("]", "").split(",");
         if (parte.length == 2) {

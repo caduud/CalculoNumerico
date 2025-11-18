@@ -1,4 +1,3 @@
-// Main.java
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,7 +18,6 @@ public class Main {
 
         TraduzFuncao func;
         try {
-            // Instancia a função dinâmica com as strings do arquivo de configuração
             func = new TraduzFuncao(
                     config.funcaoFxString,
                     config.funcaoDerivadaString,
@@ -31,50 +29,56 @@ public class Main {
         }
 
         Metodos methods = new Metodos(func, config.precisao, config.maxIteracoes);
+        Formatacao resultado;
 
-        Formatacao resultado = null;
+        System.out.println("Executando os Métodos...");
 
-        // ... (o switch para escolher o método continua exatamente o mesmo)
-        switch (config.metodoEscolhido) {
-            case "bisseccao":
-                System.out.println("Executando Método da Bissecção...");
-                resultado = methods.bisseccao(config.bisseccaoIntervaloInicio, config.bisseccaoIntervaloFim);
-                break;
-            case "iteracao_linear":
-                System.out.println("Executando Método da Iteração Linear...");
-                resultado = methods.iteracaoLinear(config.iteracaoLinearX0);
-                break;
-            case "newton":
-                System.out.println("Executando Método de Newton...");
-                resultado = methods.newton(config.newtonX0);
-                break;
-            case "secante":
-                System.out.println("Executando Método da Secante...");
-                resultado = methods.secante(config.secanteX0, config.secanteX1);
-                break;
-            case "regula_falsi":
-                System.out.println("Executando Método da Regula Falsi...");
-                resultado = methods.regulaFalsi(config.regulaFalsiIntervaloInicio, config.regulaFalsiIntervaloFim);
-                break;
-            default:
-                System.err.println("Método '" + config.metodoEscolhido + "' não reconhecido. Verifique o arquivo input.txt.");
-                return;
-        }
+        try (PrintWriter writer = new PrintWriter(new FileWriter(OUTPUT_FILE))) {
 
+            writer.println("--- Resultados da Análise de Zeros de Funções Reais ---");
+            writer.println();
+            writer.println("Função f(x): " + config.funcaoFxString);
+            writer.println("Função f'(x): " + config.funcaoDerivadaString);
+            writer.println("Função phi(x): " + config.funcaoPhiString);
+            writer.println("Precisão Delta: " + config.precisao);
+            writer.println("Máximo de Iterações: " + config.maxIteracoes);
+            writer.println("-----------------------------------------------------");
+            writer.println();
 
-        if (resultado != null) {
-            try (PrintWriter writer = new PrintWriter(new FileWriter(OUTPUT_FILE))) {
-                writer.println("--- Resultados da Análise de Zeros de Funções Reais ---");
-                writer.println();
-                writer.println("Função f(x): " + config.funcaoFxString); // Imprime a função lida
-                writer.println("Precisão Delta: " + config.precisao);
-                writer.println("Máximo de Iterações: " + config.maxIteracoes);
-                writer.println("-----------------------------------------------------");
+            writer.println("Metodo bisseccao");
+            resultado = methods.bisseccao(config.bisseccaoIntervaloInicio, config.bisseccaoIntervaloFim);
+            if (resultado != null) {
                 writer.println(resultado.stringFormatada());
-                System.out.println("Resultados salvos em " + OUTPUT_FILE);
-            } catch (IOException e) {
-                System.err.println("Erro ao escrever no arquivo de saída: " + e.getMessage());
             }
+
+            writer.println("Metodo iteracao linear");
+            resultado = methods.iteracaoLinear(config.iteracaoLinearX0);
+            if (resultado != null) {
+                writer.println(resultado.stringFormatada());
+            }
+
+            writer.println("Metodo newton");
+            resultado = methods.newton(config.newtonX0);
+            if (resultado != null) {
+                writer.println(resultado.stringFormatada());
+            }
+
+            writer.println("Metodo secante");
+            resultado = methods.secante(config.secanteX0, config.secanteX1);
+            if (resultado != null) {
+                writer.println(resultado.stringFormatada());
+            }
+
+            writer.println("Metodo regula falsi");
+            resultado = methods.regulaFalsi(config.regulaFalsiIntervaloInicio, config.regulaFalsiIntervaloFim);
+            if (resultado != null) {
+                writer.println(resultado.stringFormatada());
+            }
+
+            System.out.println("Resultados de todos os métodos salvos em " + OUTPUT_FILE);
+
+        } catch (IOException e) {
+            System.err.println("Erro ao escrever no arquivo de saída: " + e.getMessage());
         }
     }
 }

@@ -1,4 +1,3 @@
-// DynamicFunction.java
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
@@ -9,7 +8,6 @@ public class TraduzFuncao {
     private Expression expr_phi;
 
     public TraduzFuncao(String fx, String derivada, String phi) {
-        // Valida e cria a expressão para f(x)
         try {
             this.expr_fx = new ExpressionBuilder(fx)
                     .variables("x", "e", "pi")
@@ -18,7 +16,6 @@ public class TraduzFuncao {
             throw new IllegalArgumentException("Erro ao parsear a função f(x): " + fx, e);
         }
 
-        // Valida e cria a expressão para a derivada
         try {
             this.expr_derivada = new ExpressionBuilder(derivada)
                     .variables("x", "e", "pi")
@@ -27,7 +24,6 @@ public class TraduzFuncao {
             throw new IllegalArgumentException("Erro ao parsear a função derivada: " + derivada, e);
         }
 
-        // Valida e cria a expressão para phi(x)
         try {
             this.expr_phi = new ExpressionBuilder(phi)
                     .variables("x", "e", "pi")
